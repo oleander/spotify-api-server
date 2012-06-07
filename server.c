@@ -1038,14 +1038,13 @@ int main(int argc, char **argv) {
   };
   
   /* Dynamic settings and cache paths */
-  int c_needed_buffer = 7 + sizeof(g_config.username) / sizeof(char);
-  int s_needed_buffer = 9 + sizeof(g_config.username) / sizeof(char);
+  int needed_buffer = 10 + sizeof(g_config.username) / sizeof(char);
 
-  char cache_path[c_needed_buffer];
-  memset(cache_path, 0, c_needed_buffer * sizeof(char));
+  char cache_path[needed_buffer];
+  memset(cache_path, 0, needed_buffer * sizeof(char));
 
-  char settings_path[s_needed_buffer];
-  memset(settings_path, 0, s_needed_buffer * sizeof(char));
+  char settings_path[needed_buffer];
+  memset(settings_path, 0, needed_buffer * sizeof(char));
 
   strcpy(cache_path, ".cache-");
   strcat(cache_path, g_config.username);
