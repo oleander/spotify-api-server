@@ -35,6 +35,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <svn_diff.h>
 #include <sys/queue.h>
 #include <syslog.h>
+#include <string.h>
 
 #include "constants.h"
 #include "diff.h"
@@ -1036,15 +1037,30 @@ int main(int argc, char **argv) {
     .notify_main_thread = &notify_main_thread
   };
   
+  /* Dynamic settings and cache paths */
+  int c_needed_buffer = 7 + sizeof(g_config.username) / sizeof(char);
+  int s_needed_buffer = 9 + sizeof(g_config.username) / sizeof(char);
+
+  char cache_path[c_needed_buffer];
+  memset(cache_path, 0, c_needed_buffer * sizeof(char));
+
+  char settings_path[s_needed_buffer];
+  memset(settings_path, 0, s_needed_buffer * sizeof(char));
+
+  strcpy(cache_path, ".cache-");
+  strcat(cache_path, g_config.username);
+  strcpy(settings_path, ".settings-");
+  strcat(settings_path, g_config.username);
+
   sp_session_config session_config = {
     .api_version = SPOTIFY_API_VERSION,
     .application_key = g_config.api_key,
     .application_key_size = g_config.api_key_size,
-    .cache_location = ".cache",
+    .cache_location = cache_path,
     .callbacks = &session_callbacks,
     .compress_playlists = false,
     .dont_save_metadata_for_playlists = false,
-    .settings_location = ".settings",
+    .settings_location = settings_path,
     .user_agent = "sphttpd",
     .userdata = state,
   };

@@ -5,3 +5,5 @@ account.c
 server
 config.json
 app.key
+.cache-*
+.settings-*
